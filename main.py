@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox     # to popup the confirm window after filling the emails and password
+from tkinter import messagebox     # to pop up the confirm window after filling the emails and password
 import random
 import pyperclip
 
@@ -17,9 +17,9 @@ def generate_password():
     nr_symbols = random.randint(2, 4)
     nr_numbers = random.randint(2, 4)
 
-    new_list = [random.choice(letters) for char in range(0, nr_letters)]
-    new_list1 = [random.choice(symbols) for char in range(0, nr_symbols)]
-    new_list2 = [random.choice(numbers) for char in range(0, nr_numbers)]
+    new_list = [random.choice(letters) for _ in range(0, nr_letters)]
+    new_list1 = [random.choice(symbols) for _ in range(0, nr_symbols)]
+    new_list2 = [random.choice(numbers) for _ in range(0, nr_numbers)]
 
     password_list = new_list + new_list1 + new_list2
 
@@ -47,7 +47,8 @@ def save():
 
     else:
         is_ok = messagebox.askokcancel(title=website_name, message=f"These are the details entered, Please verify:"
-                                                                   f"\n Email ID: {email_id}\nPassword: {user_password} ")
+                                                                   f"\n Email ID: {email_id}\n"
+                                                                   f"Password: {user_password}")
 
         if is_ok:
             with open("user_file.txt", mode="a") as file:
@@ -92,7 +93,7 @@ website_entry.focus()        # Will make cursor appear in the box when program s
 # Email/Username Entry
 email_entry = Entry(width=35)
 email_entry.grid(column=1, row=2, columnspan=2, sticky="ew")
-email_entry.insert(0, "@gamail.com")
+email_entry.insert(0, "@gmail.com")
 
 # password Entry
 password_entry = Entry(width=21)
