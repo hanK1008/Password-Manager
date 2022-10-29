@@ -1,39 +1,36 @@
 from tkinter import *
-from tkinter import messagebox
+from tkinter import messagebox     # to popup the confirm window after filling the emails and password
 import random
+import pyperclip
+
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 # Password Generator Project
+def generate_password():
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+               'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
+               'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
-letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-           'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-           'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
-numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
+    nr_letters = random.randint(8, 10)
+    nr_symbols = random.randint(2, 4)
+    nr_numbers = random.randint(2, 4)
 
-nr_letters = random.randint(8, 10)
-nr_symbols = random.randint(2, 4)
-nr_numbers = random.randint(2, 4)
+    new_list = [random.choice(letters) for char in range(0, nr_letters)]
+    new_list1 = [random.choice(symbols) for char in range(0, nr_symbols)]
+    new_list2 = [random.choice(numbers) for char in range(0, nr_numbers)]
 
-password_list = []
+    password_list = new_list + new_list1 + new_list2
 
-for char in range(nr_letters):
-    password_list.append(random.choice(letters))
+    random.shuffle(password_list)
 
-for char in range(nr_symbols):
-    password_list += random.choice(symbols)
+    password = "".join(password_list)
 
-for char in range(nr_numbers):
-    password_list += random.choice(numbers)
-
-random.shuffle(password_list)
-
-password = ""
-for char in password_list:
-    password += char
-
-print(f"Your password is: {password}")
-
+    # print(f"Your password is: {password}")   # For testing
+    password_entry.delete(0, END)
+    password_entry.insert(0, password)
+    pyperclip.copy(password)         # It will copy the generated password into the clipboard
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -95,14 +92,14 @@ website_entry.focus()        # Will make cursor appear in the box when program s
 # Email/Username Entry
 email_entry = Entry(width=35)
 email_entry.grid(column=1, row=2, columnspan=2, sticky="ew")
-email_entry.insert(0, "myemail@gamail.com")
+email_entry.insert(0, "@gamail.com")
 
 # password Entry
 password_entry = Entry(width=21)
 password_entry.grid(column=1, row=3, sticky="ew")
 
 # Generate password button
-generate_password_button = Button(text="Generate Password")
+generate_password_button = Button(text="Generate Password", command=generate_password)
 generate_password_button.grid(column=2, row=3)
 
 # Add button
