@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import messagebox     # to pop up the confirm window after filling the emails and password
 import random
 import pyperclip
-
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 # Password Generator Project
@@ -40,6 +40,13 @@ def save():
     email_id = email_entry.get()
     user_password = password_entry.get()
 
+    new_entry = {
+        website_name: {
+            "email": email_id,
+            "password": user_password
+        }
+    }
+
     if len(website_name) == 0 or len(email_id) == 0 or len(user_password) == 0:
         messagebox.showwarning(title="Oops", message="Please make sure you haven't left any fields empty!")
         # messagebox.showerror(title="Oops", message="Please don't leave any of the fields empty!")
@@ -51,8 +58,22 @@ def save():
                                                                    f"Password: {user_password}")
 
         if is_ok:
-            with open("user_file.txt", mode="a") as file:
-                file.write(f"{website_name} | {email_id} | {user_password}\n")
+            # Commenting the below code to change simple file to JSON file
+            # with open("user_file.txt", mode="a") as file:
+            #     file.write(f"{website_name} | {email_id} | {user_password}\n")
+            # comment ends here
+            try:
+                with open("user_data.json", mode="r") as file:  # Opening file in read mode
+                    data = json.load(file)                      # Reading from file and saving as data
+                    data.update(new_entry)                      # Updating data
+
+            except FileNotFoundError:
+                with open("user_data.json", mode="w") as file:  # Opening file in write mode
+                    json.dump(new_entry, file, indent=4)             # Saving/dumping the updated data in the file
+
+            else:
+                with open("user_data.json", mode="w") as file:  # Opening file in write mode
+                    json.dump(data, file, indent=4)  # Saving/dumping the updated data in the file
 
             # Clearing data after clicking add button
             website_entry.delete(0, END)     # Deleting from 0 means start to END= "end" for that entry
@@ -93,7 +114,7 @@ website_entry.focus()        # Will make cursor appear in the box when program s
 # Email/Username Entry
 email_entry = Entry(width=35)
 email_entry.grid(column=1, row=2, columnspan=2, sticky="ew")
-email_entry.insert(0, "@gmail.com")
+email_entry.insert(0, "mohdahmedk@gmail.com")
 
 # password Entry
 password_entry = Entry(width=21)
