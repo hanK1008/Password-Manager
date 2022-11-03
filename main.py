@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import messagebox     # to pop up the confirm window after filling the emails and password
+from tkinter import messagebox  # to pop up the confirm window after filling the emails and password
 import random
 import pyperclip
 import json
@@ -31,7 +31,9 @@ def generate_password():
     # print(f"Your password is: {password}")   # For testing
     password_entry.delete(0, END)
     password_entry.insert(0, password)
-    pyperclip.copy(password)         # It will copy the generated password into the clipboard
+    pyperclip.copy(password)  # It will copy the generated password into the clipboard
+
+
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
 
@@ -65,30 +67,46 @@ def save():
             # comment ends here
             try:
                 with open("user_data.json", mode="r") as file:  # Opening file in read mode
-                    data = json.load(file)                      # Reading from file and saving as data
-                    data.update(new_entry)                      # Updating data
+                    data = json.load(file)  # Reading from file and saving as data
+                    data.update(new_entry)  # Updating data
 
             except FileNotFoundError:
                 with open("user_data.json", mode="w") as file:  # Opening file in write mode
-                    json.dump(new_entry, file, indent=4)             # Saving/dumping the updated data in the file
+                    json.dump(new_entry, file, indent=4)  # Saving/dumping the updated data in the file
 
             else:
                 with open("user_data.json", mode="w") as file:  # Opening file in write mode
                     json.dump(data, file, indent=4)  # Saving/dumping the updated data in the file
 
             # Clearing data after clicking add button
-            website_entry.delete(0, END)     # Deleting from 0 means start to END= "end" for that entry
+            website_entry.delete(0, END)  # Deleting from 0 means start to END= "end" for that entry
             password_entry.delete(0, END)
 
 
 # ---------------------------- SEARCH PASSWORD ------------------------------- #
 
 def search_password():
+    website_name = website_entry.get()
+    try:
+        with open("user_data.json", "r") as file:
+            data = json.load(file)
+
+    except FileNotFoundError:
+        messagebox.showerror(title="Error", message="You have no saved password yet, "
+                                                    "Please save some password before start searching")
+    else:
+        if website_name in data:
+            email = data[website_name]["email"]
+            password = data[website_name]["password"]
+            messagebox.showinfo(title=website_name, message=f"Here we found your details:"
+                                                            f"\nEmail ID: {email}\n"
+                                                            f"Password: {password}")
+
+        else:
+            messagebox.showinfo(title=website_name, message="This website have no entry in your password list.")
 
 
-
- # ---------------------------- UI SETUP ------------------------------- #
-
+# ---------------------------- UI SETUP ------------------------------- #
 
 root = Tk()
 root.title("Password Manager")
@@ -117,7 +135,7 @@ password_label.grid(column=0, row=3)
 # Website entry
 website_entry = Entry(width=21)
 website_entry.grid(column=1, row=1, sticky="ew")
-website_entry.focus()        # Will make cursor appear in the box when program starts
+website_entry.focus()  # Will make cursor appear in the box when program starts
 
 # Email/Username Entry
 email_entry = Entry(width=35)
@@ -133,7 +151,7 @@ generate_password_button = Button(text="Generate Password", command=generate_pas
 generate_password_button.grid(column=2, row=3)
 
 # Search button
-generate_password_button = Button(text="Search", width=14)
+generate_password_button = Button(text="Search", width=14, command=search_password)
 generate_password_button.grid(column=2, row=1)
 
 # Add button
