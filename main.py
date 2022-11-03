@@ -4,6 +4,7 @@ import random
 import pyperclip
 import json
 
+
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 # Password Generator Project
 def generate_password():
@@ -79,7 +80,14 @@ def save():
             website_entry.delete(0, END)     # Deleting from 0 means start to END= "end" for that entry
             password_entry.delete(0, END)
 
-# ---------------------------- UI SETUP ------------------------------- #
+
+# ---------------------------- SEARCH PASSWORD ------------------------------- #
+
+def search_password():
+
+
+
+ # ---------------------------- UI SETUP ------------------------------- #
 
 
 root = Tk()
@@ -107,8 +115,8 @@ password_label = Label(text="Password:")
 password_label.grid(column=0, row=3)
 
 # Website entry
-website_entry = Entry(width=35)
-website_entry.grid(column=1, row=1, columnspan=2, sticky="ew")
+website_entry = Entry(width=21)
+website_entry.grid(column=1, row=1, sticky="ew")
 website_entry.focus()        # Will make cursor appear in the box when program starts
 
 # Email/Username Entry
@@ -123,6 +131,10 @@ password_entry.grid(column=1, row=3, sticky="ew")
 # Generate password button
 generate_password_button = Button(text="Generate Password", command=generate_password)
 generate_password_button.grid(column=2, row=3)
+
+# Search button
+generate_password_button = Button(text="Search", width=14)
+generate_password_button.grid(column=2, row=1)
 
 # Add button
 add_button = Button(text="Add", width=36, command=save)
